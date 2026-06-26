@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Necesidades - Puente Solidario</title>
+  <link rel="stylesheet" href="/css/variables.css"><link rel="stylesheet" href="/css/global.css"><link rel="stylesheet" href="/css/components.css"><link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+  <header class="site-header"><nav class="container nav"><a class="brand" href="/">Puente Solidario<span>Chile-Venezuela</span></a><div class="nav-links"><a href="/">Inicio</a><a href="/centros.html">Centros</a><a href="/necesidades.html">Necesidades</a><a href="/registrar-centro.html">Registrar centro</a></div></nav></header>
+  <main class="container page">
+    <div class="page-title"><h1>Necesidades publicadas</h1><p class="muted">Filtra por categoria, prioridad, estado, centro o region.</p></div>
+    <form id="filters" class="filters">
+      <input class="form-control" name="categoria" placeholder="Categoria">
+      <select class="form-control" name="prioridad"><option value="">Prioridad</option><option>urgente</option><option>alta</option><option>media</option><option>baja</option></select>
+      <select class="form-control" name="estado"><option value="">Estado</option><option>publicada</option><option>pendiente</option><option>pausada</option></select>
+      <input class="form-control" name="centro" placeholder="ID centro">
+      <input class="form-control" name="region" placeholder="Region">
+      <button class="btn btn-primary">Filtrar</button>
+    </form>
+    <div id="needsList" class="grid grid-3"></div>
+  </main>
+  <script src="/js/api.js"></script><script src="/js/necesidades.js"></script>
+</body>
+</html>

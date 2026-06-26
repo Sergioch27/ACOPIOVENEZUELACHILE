@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registrar centro - Puente Solidario</title>
+  <link rel="stylesheet" href="/css/variables.css"><link rel="stylesheet" href="/css/global.css"><link rel="stylesheet" href="/css/components.css"><link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+  <header class="site-header"><nav class="container nav"><a class="brand" href="/">Puente Solidario<span>Chile-Venezuela</span></a><div class="nav-links"><a href="/centros.html">Centros</a><a href="/necesidades.html">Necesidades</a></div></nav></header>
+  <main class="container page">
+    <h1>Proponer centro de acopio</h1>
+    <form class="card" id="registerCenter">
+      <div class="form-row"><div class="form-group"><label>Nombre del centro</label><input class="form-control" name="nombre" required></div><div class="form-group"><label>Organizacion responsable</label><input class="form-control" name="organizacion" required></div></div>
+      <div class="form-row"><div class="form-group"><label>Nombre del responsable</label><input class="form-control" name="responsable_nombre" required></div><div class="form-group"><label>Telefono</label><input class="form-control" name="telefono" required></div></div>
+      <div class="form-row"><div class="form-group"><label>Correo</label><input class="form-control" name="email" type="email" required></div><div class="form-group"><label>Region</label><input class="form-control" name="region" required></div></div>
+      <div class="form-row"><div class="form-group"><label>Comuna</label><input class="form-control" name="comuna" required></div><div class="form-group"><label>Direccion</label><input class="form-control" name="direccion" required></div></div>
+      <div class="form-group"><label>Referencia</label><input class="form-control" name="referencia"></div>
+      <div class="form-row"><div class="form-group"><label>Horario</label><input class="form-control" name="horario" required></div><div class="form-group"><label>Proxima fecha de despacho</label><input class="form-control" name="proxima_fecha_despacho" type="date"></div></div>
+      <div class="form-row"><div class="form-group"><label>Fecha de inicio</label><input class="form-control" name="fecha_inicio" type="date"></div><div class="form-group"><label>Fecha de cierre</label><input class="form-control" name="fecha_cierre" type="date"></div></div>
+      <div class="form-group"><label>Productos recibidos</label><textarea class="form-control" name="productos_recibidos"></textarea></div>
+      <div class="form-group"><label>Productos no recibidos</label><textarea class="form-control" name="productos_no_recibidos"></textarea></div>
+      <div class="form-group"><label>Destino de las donaciones</label><input class="form-control" name="destino_donaciones"></div>
+      <div class="form-group"><label>Observaciones</label><textarea class="form-control" name="observaciones"></textarea></div>
+      <button class="btn btn-primary">Enviar centro</button><div id="formMsg"></div>
+    </form>
+  </main>
+  <script src="/js/api.js"></script><script src="/js/registrar-centro.js"></script>
+</body>
+</html>

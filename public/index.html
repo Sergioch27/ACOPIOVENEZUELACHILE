@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Puente Solidario Chile-Venezuela</title>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+  <header class="site-header"><nav class="container nav">
+    <a class="brand" href="/">Puente Solidario<span>Chile-Venezuela</span></a>
+    <div class="nav-links"><a href="/">Inicio</a><a href="/centros.html">Centros</a><a href="/necesidades.html">Necesidades</a><a href="#como-ayudar">Como ayudar</a><a href="/admin/login.html">Admin</a><a class="btn btn-primary" href="/admin/login.html">Iniciar sesion</a></div>
+  </nav></header>
+  <main>
+    <section class="hero"><div class="container hero-grid">
+      <div>
+        <h1>Chile se organiza para ayudar a Venezuela</h1>
+        <p>Encuentra centros de acopio verificados cerca de ti y revisa que productos se necesitan con mayor urgencia.</p>
+        <form class="search-panel" id="homeSearch"><div class="search-line"><input name="q" placeholder="Buscar por region, comuna o nombre del centro"><button class="btn btn-primary">Encontrar centro</button><a class="btn btn-secondary" href="/necesidades.html?prioridad=urgente">Ver necesidades urgentes</a></div></form>
+      </div>
+      <div class="hero-card"><h2>Ayuda organizada</h2><p class="muted">Centros verificados, prioridades visibles y actualizaciones simples para coordinar donaciones con confianza.</p></div>
+    </div></section>
+    <section class="container section steps-section" id="como-ayudar"><div class="section-head"><div><h2>Como funciona</h2><p class="muted">Sigue estos pasos para donar de forma clara y segura.</p></div></div><div class="grid grid-4 steps-grid">
+      <div class="card step"><span class="step-number">1</span><h3>Busca un centro</h3><p class="muted">Encuentra centros por comuna, region o producto recibido.</p></div>
+      <div class="card step"><span class="step-number">2</span><h3>Revisa prioridades</h3><p class="muted">Consulta que productos se necesitan con mayor urgencia.</p></div>
+      <div class="card step"><span class="step-number">3</span><h3>Confirma detalles</h3><p class="muted">Verifica direccion, horario y condiciones antes de ir.</p></div>
+      <div class="card step"><span class="step-number">4</span><h3>Entrega tu donacion</h3><p class="muted">Lleva tu aporte al centro y ayuda a mantener la red actualizada.</p></div>
+    </div></section>
+    <section class="container section"><div id="stats" class="grid grid-4"></div></section>
+    <section class="container section"><div class="section-head"><div><h2>Necesidades prioritarias</h2><p class="muted">Productos con mayor urgencia publicados por la red.</p></div><a class="btn btn-secondary" href="/necesidades.html">Ver todas</a></div><div id="priorityNeeds" class="grid grid-4"></div></section>
+    <section class="container section"><div class="section-head"><div><h2>Centros de acopio</h2><p class="muted">Revisa centros disponibles y la informacion necesaria para coordinar tu entrega.</p></div><a class="btn btn-secondary" href="/centros.html">Buscar centros</a></div><div id="nearCenters" class="grid grid-3"></div></section>
+  </main>
+  <footer class="footer"><div class="container footer-grid"><div><strong>Puente Solidario</strong><p>Coordinamos centros de acopio, necesidades prioritarias y actualizaciones para que la ayuda llegue mejor organizada.</p></div><a href="#">Sobre nosotros</a><a href="#">Transparencia</a><a href="#">Contacto</a><a href="#">Politica de privacidad</a></div></footer>
+  <script src="/js/api.js"></script><script src="/js/home.js"></script>
+</body>
+</html>
