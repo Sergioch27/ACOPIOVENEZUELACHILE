@@ -121,6 +121,3 @@ Editar `public/css/variables.css`. Los estilos de componentes reutilizables esta
 
 - Agregar mapa real por coordenadas.
 - Mejorar reportes y usuarios administrativos.
-- Exportar datos operativos.
-- Agregar pruebas automatizadas de API.
-- Reemplazar datos demo por carga administrable.
