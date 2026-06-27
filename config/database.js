@@ -184,4 +184,22 @@ if (!productCount) {
   ].forEach((name, index) => insertProduct.run(name, index + 1));
 }
 
+// Seed organizaciones with generic defaults if empty
+const orgCount = db.prepare("SELECT COUNT(*) total FROM organizaciones").get().total;
+if (!orgCount) {
+  const insertOrg = db.prepare("INSERT INTO organizaciones (nombre, estado_verificacion) VALUES (?, 'pendiente')");
+  [
+    "Iglesia / Comunidad religiosa",
+    "Junta de vecinos",
+    "Fundacion sin fines de lucro",
+    "Organizacion comunitaria venezolana",
+    "Cruz Roja / Defensa Civil",
+    "Municipalidad / Gobierno local",
+    "Empresa o comercio",
+    "Organizacion estudiantil / Universidad",
+    "Grupo de voluntarios independiente",
+    "Otra organizacion"
+  ].forEach((nombre) => insertOrg.run(nombre));
+}
+
 module.exports = db;

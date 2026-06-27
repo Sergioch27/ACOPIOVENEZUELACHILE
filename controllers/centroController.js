@@ -63,7 +63,6 @@ function registerOptions(req, res) {
   const organizaciones = db.prepare(`
     SELECT id, nombre
     FROM organizaciones
-    WHERE estado_verificacion IN ('verificada','pendiente')
     ORDER BY nombre
   `).all();
   const productos = db.prepare(`

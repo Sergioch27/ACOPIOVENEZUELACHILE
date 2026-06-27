@@ -61,6 +61,9 @@ async function loadRegisterOptions() {
   try {
     const options = await apiRequest("/api/registro/opciones");
     orgSelect.innerHTML = `<option value="">Selecciona una organizacion</option>${options.organizaciones.map((org) => `<option value="${org.id}">${escapeHtml(org.nombre)}</option>`).join("")}`;
+    if (!options.organizaciones.length) {
+      orgSelect.innerHTML = `<option value="">No hay organizaciones registradas</option>`;
+    }
     catalogProducts = options.productos || [];
     receivedBox.innerHTML = catalogProducts.map((product) => `
       <label class="product-check"><input type="checkbox" name="productos_recibidos_check" value="${escapeHtml(product.nombre)}"> ${escapeHtml(product.nombre)}</label>
