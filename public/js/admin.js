@@ -21,7 +21,7 @@ function adminShell(title) {
   return `<aside class="admin-sidebar">
     <a class="brand" href="/admin/dashboard.html">Puente Solidario<span>Admin</span></a>
     <a href="/admin/dashboard.html">Resumen</a><a href="/admin/centros.html">Centros</a><a href="/admin/necesidades.html">Necesidades</a>
-    <a href="#">Reportes</a><a href="#">Usuarios</a><button onclick="logout()">Cerrar sesion</button>
+    <a href="/admin/configuracion.html">Configuracion</a><a href="#">Reportes</a><a href="#">Usuarios</a><button onclick="logout()">Cerrar sesion</button>
   </aside><main class="admin-main"><div class="admin-top"><div><h1>${escapeHtml(title)}</h1><p class="muted">Gestion de centros, necesidades y verificaciones.</p></div><div class="actions"><a class="btn btn-secondary" href="/admin/centro-form.html">Crear centro</a><a class="btn btn-primary" href="/admin/necesidad-form.html">Crear necesidad</a></div></div><div id="adminContent"></div></main>`;
 }
 
@@ -143,6 +143,77 @@ async function loadAdminNeeds() {
     <button class="btn btn-secondary" onclick="needAction(${r.id}, 'pausar')">Pausar</button>
     <button class="btn btn-secondary" onclick="needAction(${r.id}, 'completar')">Completar</button>
     <button class="btn btn-danger" onclick="deleteNeed(${r.id})">Eliminar</button>`);
+}
+
+async function loadAdminConfig() {
+  await requireSession();
+  document.querySelector("#adminApp").innerHTML = adminShell("Configuracion");
+  await renderAdminConfig();
+}
+
+async function renderAdminConfig() {
+  const [orgs, products] = await Promise.all([
+    apiRequest("/api/admin/organizaciones"),
+    apiRequest("/api/admin/productos")
+  ]);
+  document.querySelector("#adminContent").innerHTML = `
+    <div class="grid grid-2">
+      <section class="card">
+        <h2>Organizaciones responsables</h2>
+        <p class="muted">Estas opciones aparecen en el selector del formulario publico.</p>
+        <form id="orgForm" class="config-form">
+          <input type="hidden" name="id">
+          <div class="form-group"><label>Nombre</label><input class="form-control" name="nombre" required></div>
+          <div class="form-row">${input("telefono","Telefono")} ${input("email","Correo","", "email")}</div>
+          <div class="form-row">${input("sitio_web","Sitio web")}<div class="form-group"><label>Estado</label><select class="form-control" name="estado_verificacion"><option value="verificada">Verificada</option><option value="pendiente">Pendiente</option></select></div></div>
+          <button class="btn btn-primary">Guardar organizacion</button>
+        </form>
+        <div class="config-list">${orgs.map((org) => `<button class="config-item" onclick='editOrg(${JSON.stringify(org)})'><strong>${escapeHtml(org.nombre)}</strong><span>${escapeHtml(org.estado_verificacion)}</span></button>`).join("") || emptyState()}</div>
+      </section>
+      <section class="card">
+        <h2>Productos del formulario</h2>
+        <p class="muted">Los productos activos aparecen como checks para centros de acopio.</p>
+        <form id="productForm" class="config-form">
+          <input type="hidden" name="id">
+          <div class="form-row">${input("nombre","Producto")} ${input("orden","Orden","0","number")}</div>
+          <label class="check-item"><input type="checkbox" name="activo" checked> Activo</label>
+          <button class="btn btn-primary">Guardar producto</button>
+        </form>
+        <div class="config-list">${products.map((product) => `<button class="config-item" onclick='editProduct(${JSON.stringify(product)})'><strong>${escapeHtml(product.nombre)}</strong><span>${product.activo ? "Activo" : "Inactivo"} | Orden ${escapeHtml(product.orden)}</span></button>`).join("") || emptyState()}</div>
+      </section>
+    </div>`;
+
+  document.querySelector("#orgForm").onsubmit = async (event) => {
+    event.preventDefault();
+    const body = formDataObject(event.target);
+    await apiRequest(body.id ? `/api/admin/organizaciones/${body.id}` : "/api/admin/organizaciones", { method: body.id ? "PUT" : "POST", body });
+    renderAdminConfig();
+  };
+  document.querySelector("#productForm").onsubmit = async (event) => {
+    event.preventDefault();
+    const body = formDataObject(event.target);
+    body.activo = event.target.elements.activo.checked;
+    await apiRequest(body.id ? `/api/admin/productos/${body.id}` : "/api/admin/productos", { method: body.id ? "PUT" : "POST", body });
+    renderAdminConfig();
+  };
+}
+
+function editOrg(org) {
+  const form = document.querySelector("#orgForm");
+  form.elements.id.value = org.id;
+  form.elements.nombre.value = org.nombre || "";
+  form.elements.telefono.value = org.telefono || "";
+  form.elements.email.value = org.email || "";
+  form.elements.sitio_web.value = org.sitio_web || "";
+  form.elements.estado_verificacion.value = org.estado_verificacion || "pendiente";
+}
+
+function editProduct(product) {
+  const form = document.querySelector("#productForm");
+  form.elements.id.value = product.id;
+  form.elements.nombre.value = product.nombre || "";
+  form.elements.orden.value = product.orden || 0;
+  form.elements.activo.checked = Boolean(product.activo);
 }
 
 async function needAction(id, action) {

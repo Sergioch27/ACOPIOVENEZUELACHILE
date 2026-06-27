@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 190" role="img" aria-label="Acopio Chile Venezuela">
+  <defs>
+    <linearGradient id="shadow" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#061A52" stop-opacity=".18"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#061A52" flood-opacity=".24"/>
+    </filter>
+    <clipPath id="heartClip">
+      <path d="M120 166C75 137 33 108 33 65c0-28 21-49 48-49 17 0 31 8 39 21 8-13 22-21 39-21 27 0 48 21 48 49 0 43-42 72-87 101Z"/>
+    </clipPath>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <path d="M120 166C75 137 33 108 33 65c0-28 21-49 48-49 17 0 31 8 39 21 8-13 22-21 39-21 27 0 48 21 48 49 0 43-42 72-87 101Z" fill="#ffffff" stroke="#061A52" stroke-width="5"/>
+
+    <g clip-path="url(#heartClip)">
+      <rect x="30" y="14" width="90" height="55" fill="#0057D9"/>
+      <rect x="80" y="14" width="50" height="55" fill="#ffffff"/>
+      <rect x="30" y="69" width="100" height="45" fill="#EF233C"/>
+      <rect x="30" y="114" width="100" height="58" fill="#0057D9"/>
+      <path d="M66 42l6 16 17 1-13 10 4 17-14-9-15 9 5-17-13-10 17-1z" fill="#ffffff"/>
+
+      <rect x="116" y="14" width="100" height="52" fill="#FFD500"/>
+      <rect x="116" y="66" width="100" height="42" fill="#00247D"/>
+      <rect x="116" y="108" width="100" height="64" fill="#EF233C"/>
+      <g fill="#ffffff">
+        <path d="M147 72l4 9 10 1-8 6 3 10-9-5-9 5 3-10-8-6 10-1z"/>
+        <path d="M170 70l4 9 10 1-8 6 3 10-9-5-9 5 3-10-8-6 10-1z"/>
+        <path d="M193 72l4 9 10 1-8 6 3 10-9-5-9 5 3-10-8-6 10-1z"/>
+      </g>
+      <rect x="30" y="14" width="186" height="158" fill="url(#shadow)" opacity=".45"/>
+    </g>
+
+    <g stroke="#061A52" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M82 94l24-20c8-7 19-8 28-2l21 15c7 5 8 15 2 21-4 4-10 5-16 2l-21-11-13 9c-8 6-19 4-24-3-3-4-3-8-1-11Z" fill="#FFD500"/>
+      <path d="M133 96l33 30c5 5 5 13 0 18s-12 5-17 1l-6-5c4 5 3 12-2 16s-11 4-16 0l-7-6c3 5 2 11-3 15s-11 3-15-1l-8-7c1 5-1 10-5 13-5 4-12 3-16-2l-21-25" fill="#EF233C"/>
+      <path d="M92 157l-20-18M118 150l-25-22M144 140l-25-22M166 126l-25-23" fill="none"/>
+      <path d="M86 124l-20 24c-5 6-14 6-19 1s-5-12 0-18l20-24c5-6 14-6 19-1s5 12 0 18Z" fill="#ffffff"/>
+      <path d="M108 129l-22 26c-5 6-14 6-19 1s-5-12 0-18l22-26c5-6 14-6 19-1s5 12 0 18Z" fill="#ffffff"/>
+      <path d="M128 137l-18 21c-5 6-13 6-18 2s-5-11-1-16l18-21c5-6 13-6 18-2s5 11 1 16Z" fill="#ffffff"/>
+    </g>
+  </g>
+</svg>

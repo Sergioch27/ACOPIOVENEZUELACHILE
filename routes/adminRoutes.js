@@ -12,6 +12,18 @@ router.use(requireAdmin);
 
 router.get("/dashboard", admin.dashboard);
 router.get("/categorias", admin.categories);
+router.get("/organizaciones", admin.adminOrganizaciones);
+router.post("/organizaciones", admin.saveOrganizacion);
+router.put("/organizaciones/:id", (req, res, next) => {
+  req.body.id = req.params.id;
+  admin.saveOrganizacion(req, res, next);
+});
+router.get("/productos", admin.adminProductos);
+router.post("/productos", admin.saveProducto);
+router.put("/productos/:id", (req, res, next) => {
+  req.body.id = req.params.id;
+  admin.saveProducto(req, res, next);
+});
 
 router.get("/centros", admin.adminCentros);
 router.post("/centros", admin.saveCentro);

@@ -5,8 +5,11 @@ const necesidad = require("../controllers/necesidadController");
 const router = express.Router();
 
 router.get("/stats", necesidad.getStats);
+router.get("/registro/opciones", centro.registerOptions);
+router.get("/chile/comunas", centro.listChileComunas);
 router.get("/centros", centro.listCentros);
 router.get("/centros/:id", centro.getCentro);
+router.get("/necesidades/opciones", necesidad.getFilterOptions);
 router.get("/necesidades", necesidad.listNecesidades);
 router.get("/necesidades/:id", necesidad.getNecesidad);
 router.post("/centros/proponer", centro.proposeCentro);

@@ -34,3 +34,11 @@
 .quantity-row:last-child { border-bottom: 0; }
 .quantity-row label { margin: 0; }
 .quick-update-card .btn-primary { width: 100%; min-height: 58px; font-size: 18px; }
+.config-form { margin: 14px 0 18px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border-soft); }
+.config-list { display: grid; gap: 10px; }
+.config-item {
+  width: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-small);
+  padding: 12px; background: var(--color-white); color: var(--color-text); text-align: left;
+  display: flex; justify-content: space-between; gap: 12px; cursor: pointer;
+}
+.config-item span { color: var(--color-text-light); font-size: 13px; font-weight: 800; }

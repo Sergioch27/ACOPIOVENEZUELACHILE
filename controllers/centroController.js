@@ -1,6 +1,10 @@
 const crypto = require("crypto");
 const db = require("../config/database");
 
+let chileComunasCache = null;
+let chileComunasCacheAt = 0;
+const CHILE_COMUNAS_TTL_MS = 1000 * 60 * 60 * 12;
+
 const publicCenterFields = `
   c.*, o.nombre AS organizacion_nombre,
   (SELECT GROUP_CONCAT(n.nombre, ', ')
@@ -55,6 +59,56 @@ function listCentros(req, res) {
   res.json(rows);
 }
 
+function registerOptions(req, res) {
+  const organizaciones = db.prepare(`
+    SELECT id, nombre
+    FROM organizaciones
+    WHERE estado_verificacion IN ('verificada','pendiente')
+    ORDER BY nombre
+  `).all();
+  const productos = db.prepare(`
+    SELECT id, nombre
+    FROM productos_catalogo
+    WHERE activo = 1
+    ORDER BY orden, nombre
+  `).all();
+  res.json({ organizaciones, productos });
+}
+
+async function listChileComunas(req, res) {
+  try {
+    const now = Date.now();
+    if (!chileComunasCache || now - chileComunasCacheAt > CHILE_COMUNAS_TTL_MS) {
+      const response = await fetch("https://chileabierto.cl/api/v1/comunas");
+      if (!response.ok) throw new Error(`ChileAbierto respondio ${response.status}`);
+      const payload = await response.json();
+      const comunas = Array.isArray(payload.data) ? payload.data : [];
+      chileComunasCache = comunas.map((item) => ({
+        code: item.code,
+        name: item.name,
+        region_id: item.region_id,
+        region_name: item.region_name,
+        province_name: item.province_name
+      }));
+      chileComunasCacheAt = now;
+    }
+
+    const regionesMap = new Map();
+    chileComunasCache.forEach((item) => {
+      if (!regionesMap.has(item.region_id)) {
+        regionesMap.set(item.region_id, { id: item.region_id, nombre: item.region_name });
+      }
+    });
+
+    res.json({
+      regiones: Array.from(regionesMap.values()).sort((a, b) => a.id - b.id),
+      comunas: chileComunasCache
+    });
+  } catch (error) {
+    res.status(502).json({ error: "No se pudieron cargar regiones y comunas desde ChileAbierto." });
+  }
+}
+
 function getCentro(req, res) {
   const centro = db.prepare(`
     SELECT ${publicCenterFields}
@@ -81,14 +135,18 @@ function getCentro(req, res) {
 
 function proposeCentro(req, res) {
   required(req.body, [
-    "nombre", "organizacion", "responsable_nombre", "telefono", "email",
+    "nombre", "organizacion_id", "responsable_nombre", "telefono", "email",
     "region", "comuna", "direccion", "horario"
   ]);
 
-  const insertOrg = db.prepare(`
-    INSERT INTO organizaciones (nombre, telefono, email, estado_verificacion)
-    VALUES (?, ?, ?, 'pendiente')
-  `);
+  const phone = String(req.body.telefono || "").replace(/\s+/g, " ").trim();
+  if (!/^\+56 9 \d{4} \d{4}$/.test(phone)) {
+    return res.status(400).json({ error: "Telefono invalido. Usa el formato +56 9 1234 5678." });
+  }
+
+  const org = db.prepare("SELECT id FROM organizaciones WHERE id = ?").get(req.body.organizacion_id);
+  if (!org) return res.status(400).json({ error: "Selecciona una organizacion responsable valida." });
+
   const insertCentro = db.prepare(`
     INSERT INTO centros (
       organizacion_id, nombre, responsable_nombre, telefono, email, region, comuna,
@@ -99,10 +157,9 @@ function proposeCentro(req, res) {
   `);
 
   const tx = db.transaction(() => {
-    const org = insertOrg.run(req.body.organizacion, req.body.telefono, req.body.email);
     const token = crypto.randomBytes(24).toString("hex");
     const centro = insertCentro.run(
-      org.lastInsertRowid,
+      org.id,
       req.body.nombre,
       req.body.responsable_nombre,
       req.body.telefono,
@@ -117,7 +174,7 @@ function proposeCentro(req, res) {
       req.body.proxima_fecha_despacho || null,
       req.body.productos_recibidos || "",
       req.body.productos_no_recibidos || "",
-      req.body.destino_donaciones || "",
+      "",
       req.body.observaciones || "",
       token
     );
@@ -198,6 +255,8 @@ function createReporte(req, res) {
 
 module.exports = {
   listCentros,
+  registerOptions,
+  listChileComunas,
   getCentro,
   proposeCentro,
   getCentroByToken,

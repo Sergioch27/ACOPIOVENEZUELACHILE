@@ -34,11 +34,12 @@ function progressPercent(item) {
 
 function badge(value) {
   const text = escapeHtml(value || "sin estado");
+  const label = text.replaceAll("_", " ").replace(/\b\w/g, (char) => char.toUpperCase());
   const cls = ["verificado", "publicada", "completada", "aprobado"].includes(value) ? "success"
     : ["urgente", "rechazado", "cerrado", "suspendido"].includes(value) ? "danger"
     : ["pendiente", "requiere_actualizacion", "alta"].includes(value) ? "warning"
     : "primary";
-  return `<span class="badge badge-${cls}">${text.replaceAll("_", " ")}</span>`;
+  return `<span class="badge badge-${cls}">${label}</span>`;
 }
 
 function showAlert(target, message, type = "success") {
@@ -86,3 +87,58 @@ function needCard(item) {
     <p class="muted">Verificada: ${item.verificada ? "si" : "no"} | Limite: ${formatDate(item.fecha_limite)}</p>
   </article>`;
 }
+
+function initMobileMenu() {
+  document.querySelectorAll(".site-header .nav").forEach((nav) => {
+    const links = nav.querySelector(".nav-links");
+    if (!links || nav.querySelector(".menu-toggle")) return;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "menu-toggle";
+    button.setAttribute("aria-label", "Abrir menu");
+    button.setAttribute("aria-expanded", "false");
+    button.innerHTML = "<span></span><span></span><span></span>";
+    nav.insertBefore(button, links);
+
+    button.addEventListener("click", () => {
+      const isOpen = nav.classList.toggle("is-open");
+      button.setAttribute("aria-expanded", String(isOpen));
+      button.setAttribute("aria-label", isOpen ? "Cerrar menu" : "Abrir menu");
+    });
+
+    links.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("is-open");
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-label", "Abrir menu");
+      });
+    });
+  });
+}
+
+function initBrandLogo() {
+  document.querySelectorAll(".brand").forEach((brand) => {
+    if (brand.querySelector(".brand-logo")) return;
+    const textNodes = Array.from(brand.childNodes);
+    const copy = document.createElement("span");
+    copy.className = "brand-copy";
+    textNodes.forEach((node) => copy.appendChild(node));
+
+    const logo = document.createElement("img");
+    logo.className = "brand-logo";
+    logo.src = "/assets/images/logo-acopio.png";
+    logo.onerror = () => {
+      logo.onerror = null;
+      logo.src = "/assets/images/logo-acopio.svg";
+    };
+    logo.alt = "";
+    logo.setAttribute("aria-hidden", "true");
+
+    brand.appendChild(logo);
+    brand.appendChild(copy);
+  });
+}
+
+initBrandLogo();
+initMobileMenu();

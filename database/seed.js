@@ -29,6 +29,17 @@ const categorias = [
 const catInsert = db.prepare("INSERT INTO categorias (nombre, icono) VALUES (?, ?)");
 categorias.forEach((cat) => catInsert.run(...cat));
 
+const productInsert = db.prepare("INSERT INTO productos_catalogo (nombre, activo, orden) VALUES (?, 1, ?)");
+[
+  "Agua embotellada",
+  "Alimentos no perecibles",
+  "Pañales infantiles",
+  "Kits de higiene",
+  "Insumos medicos basicos",
+  "Ropa nueva",
+  "Alimento para mascotas"
+].forEach((name, index) => productInsert.run(name, index + 1));
+
 const orgInsert = db.prepare(`
   INSERT INTO organizaciones (nombre, rut, telefono, email, sitio_web, estado_verificacion)
   VALUES (?, ?, ?, ?, ?, ?)

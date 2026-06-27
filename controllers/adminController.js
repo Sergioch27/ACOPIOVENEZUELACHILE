@@ -160,6 +160,63 @@ function categories(req, res) {
   res.json(db.prepare("SELECT * FROM categorias ORDER BY nombre").all());
 }
 
+function adminOrganizaciones(req, res) {
+  res.json(db.prepare("SELECT * FROM organizaciones ORDER BY nombre").all());
+}
+
+function saveOrganizacion(req, res) {
+  required(req.body, ["nombre"]);
+  const id = req.body.id;
+  if (id) {
+    db.prepare(`
+      UPDATE organizaciones
+      SET nombre=?, telefono=?, email=?, sitio_web=?, estado_verificacion=?, updated_at=CURRENT_TIMESTAMP
+      WHERE id=?
+    `).run(
+      req.body.nombre,
+      req.body.telefono || "",
+      req.body.email || "",
+      req.body.sitio_web || "",
+      req.body.estado_verificacion || "pendiente",
+      id
+    );
+    return res.json({ message: "Organizacion actualizada." });
+  }
+  const result = db.prepare(`
+    INSERT INTO organizaciones (nombre, telefono, email, sitio_web, estado_verificacion)
+    VALUES (?, ?, ?, ?, ?)
+  `).run(
+    req.body.nombre,
+    req.body.telefono || "",
+    req.body.email || "",
+    req.body.sitio_web || "",
+    req.body.estado_verificacion || "pendiente"
+  );
+  res.status(201).json({ id: result.lastInsertRowid });
+}
+
+function adminProductos(req, res) {
+  res.json(db.prepare("SELECT * FROM productos_catalogo ORDER BY orden, nombre").all());
+}
+
+function saveProducto(req, res) {
+  required(req.body, ["nombre"]);
+  const id = req.body.id;
+  if (id) {
+    db.prepare(`
+      UPDATE productos_catalogo
+      SET nombre=?, activo=?, orden=?, updated_at=CURRENT_TIMESTAMP
+      WHERE id=?
+    `).run(req.body.nombre, req.body.activo ? 1 : 0, Number(req.body.orden || 0), id);
+    return res.json({ message: "Producto actualizado." });
+  }
+  const result = db.prepare(`
+    INSERT INTO productos_catalogo (nombre, activo, orden)
+    VALUES (?, ?, ?)
+  `).run(req.body.nombre, req.body.activo ? 1 : 0, Number(req.body.orden || 0));
+  res.status(201).json({ id: result.lastInsertRowid });
+}
+
 function saveNeedAssociations(necesidadId, centroIds) {
   db.prepare("DELETE FROM centro_necesidades WHERE necesidad_id = ?").run(necesidadId);
   const insert = db.prepare("INSERT OR IGNORE INTO centro_necesidades (centro_id, necesidad_id) VALUES (?, ?)");
@@ -212,5 +269,6 @@ function setNecesidadEstado(req, res) {
 module.exports = {
   login, logout, session, dashboard, adminCentros, saveCentro, updateCentro, deleteCentro,
   setCentroEstado, verificarCentro, adminNecesidades, categories, createNecesidad,
-  updateNecesidad, deleteNecesidad, setNecesidadEstado
+  updateNecesidad, deleteNecesidad, setNecesidadEstado, adminOrganizaciones,
+  saveOrganizacion, adminProductos, saveProducto
 };

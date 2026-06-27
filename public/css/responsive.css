@@ -1,10 +1,17 @@
 @media (max-width: 850px) {
   .container { width: min(1180px, calc(100% - 24px)); }
-  .nav { align-items: flex-start; padding: 14px 0; flex-direction: column; }
-  .nav-links { flex-wrap: wrap; gap: 8px; }
+  .nav { align-items: center; padding: 12px 0; flex-direction: row; flex-wrap: wrap; gap: 12px; }
+  .menu-toggle { display: inline-flex; margin-left: auto; }
+  .nav-links {
+    display: none; width: 100%; flex-wrap: wrap; gap: 8px; padding: 10px;
+    background: var(--color-white); border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-medium); box-shadow: var(--shadow-card);
+  }
+  .nav.is-open .nav-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-grid, .grid-2, .grid-3, .grid-4, .footer-grid, .form-row, .filters, .admin-layout, .checklist {
     grid-template-columns: 1fr;
   }
+  .check-grid { grid-template-columns: 1fr; }
   .hero { padding: 44px 0 34px; }
   .hero h1 { font-size: 34px; max-width: 100%; }
   .hero p { font-size: 17px; }
@@ -17,7 +24,7 @@
   .quick-status, .quantity-row { grid-template-columns: 1fr; }
   .quantity-row { gap: 8px; }
   .btn { width: 100%; }
-  .nav-links, .actions, .admin-top .actions, .card-actions { width: 100%; }
+  .actions, .admin-top .actions, .card-actions { width: 100%; }
   .actions .btn, .actions a.btn, .actions button.btn { flex: 1 1 160px; }
   .info-item { grid-template-columns: 1fr; gap: 2px; }
   .steps-section { padding: 18px; }
@@ -32,7 +39,8 @@
   .page { padding: 22px 0 38px; }
   .nav { min-height: auto; }
   .brand { font-size: 20px; }
-  .nav-links { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+  .brand-logo { width: 46px; height: 38px; }
+  .nav.is-open .nav-links { display: grid; grid-template-columns: 1fr; width: 100%; }
   .nav-links a:not(.btn), .nav-links .btn { width: 100%; justify-content: center; text-align: center; }
   .nav-links .btn { grid-column: 1 / -1; }
   .hero { padding: 34px 0 28px; background-position: 58% center; }

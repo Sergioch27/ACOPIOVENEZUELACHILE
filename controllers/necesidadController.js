@@ -43,6 +43,27 @@ function listNecesidades(req, res) {
   res.json(rows);
 }
 
+function getFilterOptions(req, res) {
+  const categorias = db.prepare(`
+    SELECT nombre
+    FROM categorias
+    ORDER BY nombre
+  `).all();
+
+  const regiones = db.prepare(`
+    SELECT DISTINCT c.region
+    FROM centros c
+    JOIN centro_necesidades cn ON cn.centro_id = c.id
+    JOIN necesidades n ON n.id = cn.necesidad_id
+    WHERE c.region IS NOT NULL
+      AND TRIM(c.region) <> ''
+      AND n.estado IN ('publicada','pendiente','pausada')
+    ORDER BY c.region
+  `).all().map((row) => row.region);
+
+  res.json({ categorias, regiones });
+}
+
 function getNecesidad(req, res) {
   const row = db.prepare(`
     SELECT n.*, cat.nombre AS categoria_nombre,
@@ -72,4 +93,4 @@ function getStats(req, res) {
   res.json(stats);
 }
 
-module.exports = { listNecesidades, getNecesidad, getStats };
+module.exports = { listNecesidades, getFilterOptions, getNecesidad, getStats };

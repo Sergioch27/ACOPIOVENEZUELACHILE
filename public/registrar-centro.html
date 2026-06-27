@@ -8,18 +8,19 @@
 <body>
   <header class="site-header"><nav class="container nav"><a class="brand" href="/">Puente Solidario<span>Chile-Venezuela</span></a><div class="nav-links"><a href="/centros.html">Centros</a><a href="/necesidades.html">Necesidades</a></div></nav></header>
   <main class="container page">
-    <h1>Proponer centro de acopio</h1>
+    <div class="page-title"><h1>Solicitar ser centro de acopio</h1><p class="muted">Completa solo la informacion necesaria. El equipo revisara la solicitud antes de publicarla.</p></div>
     <form class="card" id="registerCenter">
-      <div class="form-row"><div class="form-group"><label>Nombre del centro</label><input class="form-control" name="nombre" required></div><div class="form-group"><label>Organizacion responsable</label><input class="form-control" name="organizacion" required></div></div>
-      <div class="form-row"><div class="form-group"><label>Nombre del responsable</label><input class="form-control" name="responsable_nombre" required></div><div class="form-group"><label>Telefono</label><input class="form-control" name="telefono" required></div></div>
-      <div class="form-row"><div class="form-group"><label>Correo</label><input class="form-control" name="email" type="email" required></div><div class="form-group"><label>Region</label><input class="form-control" name="region" required></div></div>
-      <div class="form-row"><div class="form-group"><label>Comuna</label><input class="form-control" name="comuna" required></div><div class="form-group"><label>Direccion</label><input class="form-control" name="direccion" required></div></div>
+      <div class="form-row"><div class="form-group"><label>Nombre del centro</label><input class="form-control" name="nombre" required></div><div class="form-group"><label>Organizacion responsable</label><select class="form-control" name="organizacion_id" id="orgSelect" required><option value="">Cargando organizaciones...</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>Nombre del responsable</label><input class="form-control" name="responsable_nombre" required></div><div class="form-group"><label>Telefono</label><input class="form-control" name="telefono" id="phoneInput" inputmode="numeric" value="+56 9 " placeholder="+56 9 1234 5678" required><small class="muted">Formato chileno: +56 9 1234 5678</small></div></div>
+      <div class="form-row"><div class="form-group"><label>Correo</label><input class="form-control" name="email" type="email" required></div><div class="form-group"><label>Region</label><select class="form-control" name="region" id="regionSelect" required><option value="">Cargando regiones...</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>Comuna</label><select class="form-control" name="comuna" id="communeSelect" required><option value="">Selecciona una region primero</option></select></div><div class="form-group"><label>Direccion</label><input class="form-control" name="direccion" required></div></div>
       <div class="form-group"><label>Referencia</label><input class="form-control" name="referencia"></div>
-      <div class="form-row"><div class="form-group"><label>Horario</label><input class="form-control" name="horario" required></div><div class="form-group"><label>Proxima fecha de despacho</label><input class="form-control" name="proxima_fecha_despacho" type="date"></div></div>
-      <div class="form-row"><div class="form-group"><label>Fecha de inicio</label><input class="form-control" name="fecha_inicio" type="date"></div><div class="form-group"><label>Fecha de cierre</label><input class="form-control" name="fecha_cierre" type="date"></div></div>
-      <div class="form-group"><label>Productos recibidos</label><textarea class="form-control" name="productos_recibidos"></textarea></div>
-      <div class="form-group"><label>Productos no recibidos</label><textarea class="form-control" name="productos_no_recibidos"></textarea></div>
-      <div class="form-group"><label>Destino de las donaciones</label><input class="form-control" name="destino_donaciones"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Dias de atencion</label><select class="form-control" name="dias_atencion" id="daysSelect" required><option>Lunes a Viernes</option><option>Lunes a Sabado</option><option>Todos los dias</option><option>Solo fin de semana</option><option>Horario puntual</option></select></div>
+        <div class="form-group"><label>Horario</label><div class="time-row"><input class="form-control" name="hora_inicio" type="time" value="08:00" required><span>a</span><input class="form-control" name="hora_fin" type="time" value="23:00" required></div><small class="muted" id="schedulePreview">Lunes a Viernes de 8:00 a 23:00</small></div>
+      </div>
+      <div class="form-group"><label>Productos que recibe</label><div id="receivedProducts" class="check-grid"></div><input class="form-control other-input" name="otros_recibidos" placeholder="Agregar otros productos recibidos, separados por coma"></div>
+      <div class="form-group"><label>Productos que no recibe</label><p class="muted">Se completan automaticamente con los productos no marcados arriba. Puedes agregar otros.</p><div id="notReceivedPreview" class="tag-list"></div><input class="form-control other-input" name="otros_no_recibidos" placeholder="Agregar otros productos no recibidos, separados por coma"></div>
       <div class="form-group"><label>Observaciones</label><textarea class="form-control" name="observaciones"></textarea></div>
       <button class="btn btn-primary">Enviar centro</button><div id="formMsg"></div>
     </form>
